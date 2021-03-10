@@ -1,0 +1,44 @@
+Buga C. Bogdan-Andrei, grupa 312CB
+
+Pentru început, am creat câteva funcții:
+
+1) afisare - afișează harta jocului
+2) nrZero - returnează numărul de spații libere de pe hartă; această funcție va fi utilă la calcularea scorului final
+3) coliziuneJos - conține condițiile necesare ca piesa să nu mai poată coborî
+4) coliziuneStanga - conține condițiile necesare ca piesa să nu se mai poată deplasa la stânga
+5) coliziuneDreapta - conține condițiile necesare ca piesa să nu se mai poată deplasa la dreapta
+6) Top - condițiile necesare ca piesa să nu poată coborî pe tabla de joc
+7) linieCompleta - condiția unică și necesară ca linia i să fie eliminată
+8) scor - calculează scorul final în funcție de parametrul z (numărul de spații libere de pe tabla de joc) și cl (numărul de linii complete și eliminate)
+
+În funcția main, am declarat urmatoarele variabile:
+H - harta inițială
+M - numărul de mutări
+p[50] - codul pieselor (presupunem ca avem maxim â50 de piese)
+nrLinii - numărul de linii eliminate, valoarea inițială fiind 0
+m[50][8] - mutarea piesei la stânga(daca e < 0) sau la dreapta(daca e > 0); fiecare piesă are 8 mutări
+E - o variabilă de verificare daca a fost eliminată măcar o linie după efectuarea tuturor mutărilor posibile
+aux - o variabila de retinere a codului inițial al piesei
+GameOver - o variabilă care indică daca se mai pot efectua sau nu mutari
+i - indice de piesă
+j - indice de mutare
+L - indice de linie
+
+Am citit variabilele H, M, p[i] și m[i][j], unde i ia valori de la 0 la M-1, iar j ia valori de la 0 la 7. Apoi am afișat harta inițială a jocului.
+
+Pentru fiecare variabilă, cât timp jocul se poate continua și se pot efectua mutări,
+memorăm valoarea inițiala a lui p[i] in variabila aux și mutăm p[i] de pe ultimele 2 linii pe prima linie. 
+
+(Prima mutare) Mutam p[i] și aux la stanga sau la dreapta (depinde de semnul lui m[i][0]) cu o variabila auxiliara q inițializată cu 0, care crește până când piesa dă de o coliziune în direcția de mișcare sau până când q = m[i][0] (dacă mutăm piesa la dreapta) sau q = -m[i][0] (dacă mutăm piesa la stânga).
+Când piesa ajunge pe al doilea rand, dacă ocupă 2 rânduri, aceasta va pierde bucățile de piesă de pe rândul de sus. De aceea, va trebui să-i atribuim lui p[i] valoarea aux<<48 (astfel încât piesa să fie pe primele 2 randuri).
+
+Dacă piesa nu are loc pe primul rând al tablei de joc la prima mutare, jocul se termină.
+În cazul în care piesa ocupă 2 rânduri și totuși poate să coboare pe primul rand, însă nu și pe al doilea, se actualizează harta cu bucățile de piesă de pe rândul de jos, apoi se termină jocul.
+
+Dacă nu avem coliziune sub piesă, afișăm tabla de joc pentru n=n+p[i] si mutăm piesa jos cu un rând. În caz contrar, nu se mai pot efectua coborâri de piesă și va trebui să schimbăm valoarea lui n in n+p[i], să afișăm harta pentru noua valoare a lui n și să trecem la următorea mutare.
+
+După efectuarea tuturor mutărilor unei piese, dacă există măcar o linie completă, aceasta va fi eliminată, iar ce este deasupra acesteia va coborî cu un rând. În acest caz, după eliminarea tuturor liniilor complete, se va afișa harta rezultată în urma acestei eliminări.
+
+La sfârșitul jocului, se va afișa mesajul "GAME OVER!" și, sub acesta, scorul obținut prin formula (radical din (numarul de spații libere) + 1.25 la puterea (numărul de linii complete)).
+
+
